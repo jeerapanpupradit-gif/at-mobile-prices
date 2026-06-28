@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AT Mobile - ราคาขายและราคาซ่อม</title>
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Theme Script (Prevention of Flash) -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('at_mobile_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <div class="app-layout">
+    <!-- Sidebar / Top Navigation -->
+    <aside class="app-sidebar">
+      <div class="brand-section">
+        <img src="assets/logo_dark.png" alt="AT Mobile Prices" class="brand-logo-img">
+        <span>AT Mobile Prices</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-tab-btn active" data-target="selling-prices-section">
+          <i class="fa-solid fa-tags"></i>
+          <span>ราคาขายโทรศัพท์</span>
+        </button>
+        <button class="nav-tab-btn" data-target="repair-prices-section">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span>ราคาบริการซ่อม</span>
+        </button>
+        <button class="nav-tab-btn" data-target="data-management-section">
+          <i class="fa-solid fa-database"></i>
+          <span>จัดการข้อมูลราคากลาง</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" id="theme-toggle" title="สลับธีม สว่าง/มืด">
+          <i class="fa-solid fa-sun" id="theme-icon"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Container -->
+    <main class="main-container">
+      
+      <!-- SECTION 1: SELLING PRICES -->
+      <section class="content-section" id="selling-prices-section">
+        <div class="section-header">
+          <h2>ราคากลางเครื่องใหม่ & เครื่องมือสอง</h2>
+          <p>ตรวจสอบราคาจัดจำหน่ายโทรศัพท์มือถือ อัปเดตล่าสุด</p>
+        </div>
+
+        <!-- Filters Bar -->
+        <div class="filters-bar">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="phone-search-input" placeholder="ค้นหาแบรนด์ หรือรุ่นโทรศัพท์...">
+          </div>
+          <div class="filter-groups">
+            <select class="select-filter" id="brand-filter">
+              <option value="all">ทุกแบรนด์</option>
+              <option value="Apple">Apple</option>
+              <option value="Samsung">Samsung</option>
+              <option value="Xiaomi">Xiaomi</option>
+              <option value="Oppo">Oppo</option>
+              <option value="Vivo">Vivo</option>
+            </select>
+            <select class="select-filter" id="storage-filter">
+              <option value="all">ทุกความจุ</option>
+              <option value="128GB">128GB</option>
+              <option value="256GB">256GB</option>
+              <option value="512GB">512GB</option>
+              <option value="1TB">1TB</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Device Grid -->
+        <div class="device-list-horizontal" id="device-list-horizontal">
+          <!-- Dynamically populated via app.js -->
+        </div>
+      </section>
+
+      <!-- SECTION 2: REPAIR PRICES -->
+      <section class="content-section" id="repair-prices-section" style="display: none;">
+        <div class="section-header">
+          <h2>อัตราค่าบริการซ่อมมาตรฐาน</h2>
+          <p>ราคาค่าบริการซ่อมโทรศัพท์แยกตามรายการอะไหล่ การรับประกัน และระยะเวลาซ่อม</p>
+        </div>
+
+        <!-- Dropdown Selector for active phone -->
+        <div class="filters-bar">
+          <div class="search-input-wrapper" style="max-width: 100%; display: flex; align-items: center; gap: 12px; flex-grow: 1;">
+            <label for="repair-device-select" style="font-weight: 600; font-size: 0.95rem; white-space: nowrap;">เลือกรุ่นโทรศัพท์:</label>
+            <select class="select-filter" id="repair-device-select" style="min-width: 280px; flex-grow: 1;">
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Simple Repair Pricing Card -->
+        <div class="repair-list-card">
+          <div class="repair-card-header">
+            <h3 id="active-repair-model-title">รายการซ่อมมาตรฐาน</h3>
+          </div>
+          <div class="repair-table-wrapper">
+            <table class="repair-table">
+              <thead>
+                <tr>
+                  <th>ประเภทบริการซ่อม</th>
+                  <th>ระยะเวลาดำเนินงาน</th>
+                  <th>ระยะเวลารับประกัน</th>
+                  <th style="text-align: right;">ค่าบริการรวมอะไหล่</th>
+                </tr>
+              </thead>
+              <tbody id="repair-items-tbody">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: DATA MANAGEMENT -->
+      <section class="content-section" id="data-management-section" style="display: none;">
+        <div class="section-header">
+          <h2>จัดการข้อมูลราคากลางหลังร้าน</h2>
+          <p>ระบบจัดการราคารายละเอียดเครื่องราคาขายเครื่องใหม่ เครื่องมือสอง และราคาบริการงานซ่อม</p>
+        </div>
+
+        <div class="filters-bar" style="justify-content: space-between;">
+          <h3 style="font-size: 1.1rem; font-weight: 600;">รายชื่อโทรศัพท์ทั้งหมดในระบบ</h3>
+          <button class="btn-primary" id="btn-add-device">
+            <i class="fa-solid fa-plus"></i>
+            <span>เพิ่มรุ่นใหม่</span>
+          </button>
+        </div>
+
+        <div class="data-table-card">
+          <div class="repair-table-wrapper">
+            <table class="repair-table" style="min-width: 700px;">
+              <thead>
+                <tr>
+                  <th>แบรนด์</th>
+                  <th>รุ่น (Model)</th>
+                  <th>ราคาขายเริ่มต้น (ใหม่)</th>
+                  <th style="width: 120px; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="admin-phones-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: ADD/EDIT PHONE MODAL -->
+  <div class="modal-overlay" id="phone-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modal-title">เพิ่มโทรศัพท์รุ่นใหม่</h3>
+        <button class="modal-close-btn" id="btn-close-phone-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="phone-form" onsubmit="event.preventDefault();">
+        <input type="hidden" id="form-phone-id">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-brand">แบรนด์ *</label>
+              <select class="form-input" id="form-brand" required>
+                <option value="Apple">Apple</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Xiaomi">Xiaomi</option>
+                <option value="Oppo">Oppo</option>
+                <option value="Vivo">Vivo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="form-model">ชื่อรุ่น *</label>
+              <input type="text" class="form-input" id="form-model" required placeholder="เช่น iPhone 16 Pro">
+            </div>
+          </div>
+          
+          <div class="form-group" style="display: none;">
+            <label for="form-color">รหัสสีในการแสดงผล (Hex Color)</label>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <input type="color" id="form-color" value="#06b6d4" style="border: none; border-radius: 4px; width: 42px; height: 38px; cursor: pointer;">
+              <input type="text" class="form-input" id="form-color-text" value="#06b6d4" placeholder="#000000" style="flex-grow: 1;">
+            </div>
+          </div>
+
+          <!-- Capacity Prices -->
+          <div class="form-sub-header">
+            <span>ราคาแบ่งตามความจุเครื่อง</span>
+          </div>
+          <div id="form-capacities-container">
+            <!-- Capacity entries added dynamically -->
+          </div>
+          <button type="button" class="btn-secondary" id="btn-add-form-capacity" style="padding: 6px 12px; font-size: 0.8rem; margin-top: 5px;">
+            <i class="fa-solid fa-plus"></i> เพิ่มความจุ
+          </button>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-phone-modal">ยกเลิก</button>
+          <button type="submit" class="btn-primary" id="btn-submit-phone-modal">บันทึกข้อมูล</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT REPAIRS MODAL -->
+  <div class="modal-overlay" id="repair-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="repair-modal-title">ราคาและรายละเอียดงานซ่อม</h3>
+        <button class="modal-close-btn" id="btn-close-repair-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="repair-form" onsubmit="event.preventDefault();">
+        <input type="hidden" id="form-repair-phone-id">
+        <div class="modal-body" id="repair-modal-body">
+          <!-- Dynamically populated via app.js -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-repair-modal">ยกเลิก</button>
+          <button type="submit" class="btn-primary" id="btn-submit-repair-modal">บันทึกราคาซ่อม</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Javascript Logic Files -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

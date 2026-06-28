@@ -1,0 +1,1236 @@
+/* AT Mobile - Premium Red/Yellow White Theme CSS Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Default: White / Light Theme (หลักๆ เป็นสีขาว) */
+  --bg-primary: #f8fafc;        /* Slate-50 background */
+  --bg-secondary: #ffffff;      /* Pure white sidebar background */
+  --bg-tertiary: #ffffff;       /* Pure white main containers and cards */
+  --bg-hover: rgba(220, 38, 38, 0.03); /* Soft red hover overlay */
+  
+  /* Text Contrast - Fixes "อักษรจม" */
+  --text-primary: #0f172a;      /* Charcoal slate-900 (High contrast) */
+  --text-secondary: #334155;    /* Slate-700 (High contrast) */
+  --text-tertiary: #586578;     /* Slate-600 (Labels ใหม่, มือสอง, รับซื้อ are fully readable) */
+  
+  --accent-cyan: #d92d20;       /* Crimson Red for borders and markers */
+  --accent-purple: #eab308;     /* Golden Yellow for accents and highlights */
+  
+  --border-color: rgba(217, 45, 32, 0.12); /* Subtle Red borders */
+  --border-focus: #d92d20;
+  
+  --trend-up: #10b981;
+  --trend-down: #d92d20;
+  --trend-stable: #64748b;
+  
+  --card-shadow: 0 4px 16px rgba(217, 45, 32, 0.04); /* Soft red-tinted 3D shadow */
+  --glass-shadow: 0 8px 32px rgba(217, 45, 32, 0.06);
+  --transition-speed: 0.25s;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme variables with red/yellow accents */
+  --bg-primary: #0f0808;        /* Very dark maroon background */
+  --bg-secondary: #1a0e0e;      /* Deep red-black sidebar */
+  --bg-tertiary: #221414;       /* Dark card panels */
+  --bg-hover: rgba(217, 45, 32, 0.06);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  
+  --accent-cyan: #f87171;       /* Light red accent */
+  --accent-purple: #f59e0b;     /* Amber yellow accent */
+  
+  --border-color: rgba(248, 113, 113, 0.16);
+  
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Prompt', 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* App Layout Grid (Fixed Sidebar + Right Content Panel) */
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* Left Sidebar Navigation */
+.app-sidebar {
+  width: 250px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 32px 20px;
+}
+
+.brand-section {
+  display: flex;
+  flex-direction: column; /* Stack vertically for massive logo visibility */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 0.92rem; /* Clean readable font size */
+  letter-spacing: -0.1px;
+  color: var(--text-primary);
+  margin-bottom: 36px;
+  padding: 0;
+  width: 100%;
+}
+
+.brand-logo-img {
+  width: 165px; /* Massive borderless logo - 165px */
+  height: 165px;
+  object-fit: contain;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  transition: transform 0.25s ease;
+  mix-blend-mode: multiply; /* Blends white background into light sidebar */
+  filter: invert(1) hue-rotate(180deg) contrast(1.18) brightness(1.09);
+}
+
+[data-theme="dark"] .brand-logo-img {
+  mix-blend-mode: screen; /* Blends black background into dark sidebar */
+  filter: none;
+}
+.brand-logo-img:hover {
+  transform: scale(1.05);
+}
+
+/* Sidebar Nav Tabs */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+/* Sidebar Tab buttons styled as Liquid Glass (inactive) */
+.nav-tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 20px; /* Pill shape */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: all var(--transition-speed);
+}
+
+.nav-tab-btn i {
+  font-size: 0.95rem;
+  width: 16px;
+  text-align: center;
+}
+
+.nav-tab-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+  border-color: rgba(217, 45, 32, 0.1);
+}
+
+/* ACTIVE TAB BUTTON - LIQUID GLASS (ปุ่มกระจก Liquid Glass) */
+.nav-tab-btn.active {
+  background: rgba(217, 45, 32, 0.07);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(217, 45, 32, 0.22);
+  box-shadow: 0 4px 12px rgba(217, 45, 32, 0.04);
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.sidebar-footer {
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 12px;
+}
+
+/* Theme Toggle Button - Glass effect */
+.theme-toggle-btn {
+  background: rgba(120, 120, 120, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-speed);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--accent-cyan);
+  background-color: rgba(217, 45, 32, 0.08);
+  transform: scale(1.05);
+}
+
+/* Main Container (Offset for Sidebar width) */
+.main-container {
+  flex-grow: 1;
+  margin-left: 250px;
+  max-width: 1000px;
+  width: calc(100% - 250px);
+  padding: 40px 48px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Section Header */
+.section-header {
+  margin-bottom: 4px;
+  border-bottom: 2px solid rgba(217, 45, 32, 0.08);
+  padding-bottom: 12px;
+}
+
+.section-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 2px;
+  color: var(--text-primary);
+}
+
+.section-header p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* Filters Bar Container */
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+  max-width: 360px;
+  min-width: 240px;
+}
+
+.search-input-wrapper i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all var(--transition-speed);
+}
+
+.search-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.08);
+}
+
+.filter-groups {
+  display: flex;
+  gap: 10px;
+}
+
+.select-filter {
+  padding: 10px 14px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-speed);
+}
+
+.select-filter:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* Liquid Glass buttons (ปุ่มกระจก Liquid Glass) */
+.btn-primary {
+  background: rgba(217, 45, 32, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(217, 45, 32, 0.3);
+  color: var(--accent-cyan);
+  padding: 10px 18px;
+  border-radius: 20px; /* Pill layout */
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(217, 45, 32, 0.03);
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: rgba(217, 45, 32, 0.15);
+  border-color: rgba(217, 45, 32, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(217, 45, 32, 0.08);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background: rgba(120, 120, 120, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(120, 120, 120, 0.12);
+  border-color: var(--accent-cyan);
+  transform: translateY(-1px);
+}
+
+/* Horizontal Devices List - Transformed to floating cards with dimensions (มีมิติชัดเจน) */
+.device-list-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Space between cards to give clear dimension */
+}
+
+/* Floating Card Element (การ์ดมิติขอบแดง) */
+.device-row-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color); /* Thin border */
+  border-radius: 24px;
+  box-shadow: var(--card-shadow); /* Drop shadow for 3D depth */
+  border-left: 4px solid var(--accent-cyan); /* Crimson red left-accent bar */
+  position: relative;
+  transition: transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}
+
+.device-row-horizontal:hover {
+  transform: translateY(-3px); /* Lift element up on hover */
+  box-shadow: 0 8px 24px rgba(217, 45, 32, 0.09); /* Deeper shadow on hover */
+  border-color: rgba(217, 45, 32, 0.35); /* Glow border red */
+}
+
+/* Left: Device Info */
+.device-info {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  min-width: 170px;
+}
+
+.device-brand {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-cyan); /* Crimson Red brand text */
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.device-model {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text-primary);
+}
+
+/* Center: Aligned pricing sub-table */
+.device-prices-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  padding: 0 16px;
+}
+
+.price-row-minimal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.chip-capacity {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  width: 55px;
+  flex-shrink: 0;
+}
+
+.chip-divider {
+  width: 1px;
+  height: 12px;
+  background-color: var(--border-color);
+  flex-shrink: 0;
+}
+
+/* High Contrast Price pair - Fixes "อักษรจม" */
+.price-pair-minimal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.price-pair-minimal.new {
+  width: 125px;
+}
+
+.price-pair-minimal.used {
+  width: 135px;
+}
+
+.price-pair-minimal.buy {
+  width: 135px;
+}
+
+/* Labels have slate-600 color for solid visibility */
+.price-pair-minimal .lbl {
+  font-size: 0.7rem;
+  color: var(--text-tertiary); /* Deep slate-600 contrast */
+  font-weight: 500;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.price-pair-minimal .val {
+  font-family: monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.trend-container {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.trend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.trend-dot.up { background-color: var(--trend-up); }
+.trend-dot.down { background-color: var(--trend-down); }
+.trend-dot.stable { background-color: var(--trend-stable); }
+
+/* Right Actions Column - Expanded width to prevent text overflow */
+.device-actions {
+  width: 20%;
+  min-width: 155px; /* Ensures text never clips */
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Liquid glass button on "ดูอัตราค่าซ่อม" (ปุ่มกระจก Liquid Glass) */
+.device-action-link {
+  background: rgba(217, 45, 32, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(217, 45, 32, 0.18);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  color: var(--accent-cyan);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 20px; /* Pill layout */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.device-action-link:hover {
+  background: rgba(217, 45, 32, 0.12);
+  border-color: rgba(217, 45, 32, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(217, 45, 32, 0.08);
+}
+
+/* Repair List view (Minimal table) */
+.repair-list-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--accent-cyan);
+}
+
+.repair-card-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.repair-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.repair-table-wrapper {
+  overflow-x: auto;
+}
+
+.repair-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.repair-table th {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.repair-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.88rem;
+}
+
+.repair-table tr:last-child td {
+  border-bottom: none;
+}
+
+.repair-table tr:hover td {
+  background-color: var(--bg-hover);
+}
+
+.repair-price-text {
+  font-family: monospace;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.time-badge {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.warranty-badge {
+  background-color: rgba(234, 179, 8, 0.08); /* Yellow tint warranty */
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  color: #c29200; /* Darker yellow for readability in light mode */
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .warranty-badge {
+  color: var(--accent-purple); /* bright yellow in dark mode */
+}
+
+/* Database management (Admin table layout) */
+.data-table-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 12px;
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--accent-cyan);
+}
+
+.admin-device-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.action-buttons-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Admin small button glass effect */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: rgba(120, 120, 120, 0.08);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+  background: rgba(120, 120, 120, 0.15);
+  border-color: var(--accent-cyan);
+  transform: translateY(-1px);
+}
+
+.btn-icon.edit-device:hover {
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-icon.edit-repair:hover {
+  color: var(--accent-purple);
+  border-color: var(--accent-purple);
+}
+
+.btn-icon.delete:hover {
+  color: var(--trend-down);
+  border-color: var(--trend-down);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 7, 7, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-container {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--accent-cyan); /* Red accent border */
+  border-radius: 24px;
+  width: 90%;
+  max-width: 540px;
+  box-shadow: 0 20px 40px rgba(217, 45, 32, 0.12);
+  transform: translateY(15px);
+  transition: transform 0.25s ease;
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(217, 45, 32, 0.02);
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--accent-cyan);
+}
+
+.modal-body {
+  padding: 24px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: rgba(217, 45, 32, 0.02);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  transition: all var(--transition-speed);
+}
+
+.form-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.08);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-row.three-cols {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.form-sub-header {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin: 20px 0 10px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.capacity-item-form {
+  background-color: rgba(217, 45, 32, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.capacity-header-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.remove-form-item-btn {
+  background: none;
+  border: none;
+  color: var(--trend-down);
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.repair-item-form {
+  background-color: rgba(217, 45, 32, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.repair-header-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--accent-orange);
+}
+
+.remove-repair-item-btn {
+  background: none;
+  border: none;
+  color: var(--trend-down);
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.remove-repair-item-btn:hover {
+  opacity: 0.85;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .device-row-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 16px;
+  }
+  
+  .device-info {
+    width: 100%;
+  }
+  
+  .device-prices-horizontal {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .device-actions {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .app-sidebar {
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template-areas: 
+      "brand footer"
+      "nav nav";
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    padding: 10px 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    gap: 8px 12px;
+    z-index: 100;
+  }
+  
+  .brand-section {
+    grid-area: brand;
+    display: flex;
+    flex-direction: row; /* Inline on mobile top bar */
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    padding-left: 0;
+    font-size: 0.85rem;
+    width: auto;
+  }
+  
+  .brand-logo-img {
+    width: 42px; /* Slightly larger, borderless on mobile */
+    height: 42px;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  
+  .sidebar-nav {
+    grid-area: nav;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-grow: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding: 4px 0;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .nav-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    width: auto;
+    gap: 6px;
+    border-radius: 16px;
+  }
+  
+  .nav-tab-btn i {
+    font-size: 0.85rem;
+    width: auto;
+  }
+  
+  .sidebar-footer {
+    grid-area: footer;
+    padding-top: 0;
+    border-top: none;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .main-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px 14px 40px;
+    gap: 16px;
+  }
+  
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .search-input-wrapper {
+    max-width: 100%;
+  }
+  
+  .filter-groups {
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .select-filter {
+    flex-grow: 1;
+  }
+
+  /* Form layouts on mobile */
+  .form-row, .form-row.three-cols {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Pricing rows responsive layout */
+  .device-row-horizontal {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .price-row-minimal {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 4px;
+    column-gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+    position: relative;
+    width: 100%;
+    align-items: center;
+  }
+
+  .price-row-minimal:last-child {
+    border-bottom: none;
+  }
+
+  .chip-capacity {
+    grid-column: span 3;
+    width: auto;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .chip-divider {
+    display: none !important;
+  }
+
+  .price-pair-minimal.new,
+  .price-pair-minimal.used,
+  .price-pair-minimal.buy {
+    width: auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2px;
+  }
+
+  .price-pair-minimal .lbl {
+    font-size: 0.65rem;
+    width: auto;
+    margin-bottom: 1px;
+  }
+
+  .price-pair-minimal .val {
+    font-size: 0.85rem;
+  }
+
+  .trend-container {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Repair list card styling on mobile */
+  .repair-list-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .repair-card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+
+  .repair-card-header h3 {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  #btn-edit-active-repair-device {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    display: inline-flex !important;
+  }
+
+  /* Target ONLY the repair list card table, do NOT affect the admin table */
+  .repair-list-card .repair-table-wrapper {
+    overflow-x: visible;
+  }
+
+  .repair-list-card .repair-table {
+    display: block;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .repair-list-card .repair-table thead {
+    display: none; /* Hide headers on mobile */
+  }
+
+  .repair-list-card .repair-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .repair-list-card .repair-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--border-color);
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+  }
+
+  .repair-list-card .repair-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .repair-list-card .repair-table tbody tr:hover td {
+    background-color: transparent !important;
+  }
+
+  .repair-list-card .repair-table td {
+    display: block;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  /* 1. Repair Type/Name */
+  .repair-list-card .repair-table td:nth-child(1) {
+    width: 100% !important; /* Force badges to wrap to the next line */
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 8px;
+    padding-right: 100px !important; /* Leave space on the right for the absolute price */
+    box-sizing: border-box;
+  }
+
+  /* 2. Estimated Time Badge */
+  .repair-list-card .repair-table td:nth-child(2) {
+    width: auto;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* 3. Warranty Badge */
+  .repair-list-card .repair-table td:nth-child(3) {
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* 4. Service Price */
+  .repair-list-card .repair-table td:nth-child(4) {
+    position: absolute;
+    top: 14px;
+    right: 0;
+    width: 90px;
+    text-align: right !important;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    align-self: flex-start;
+  }
+
+  /* Responsive layout for the admin data card */
+  .data-table-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+}
